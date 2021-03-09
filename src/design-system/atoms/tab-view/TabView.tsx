@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { TabContent, TabTitle, TabTitleRow, TabViewStyled } from './TabView.styled';
+import { QuickNav } from '../quick-nav';
+import { TabContent, TabTitleRow, TabViewStyled } from './TabView.styled';
 
 export type TabViewProps = {
     children: React.ReactNode[];
@@ -25,26 +26,37 @@ export const TabView = (props: TabViewProps) => {
     }
 
     const [currentTab, setCurrentTab] = React.useState<number>(props.initialTab ?? 0);
+    const tabRefs = tabNames.reduce<{ [name: string]: React.RefObject<HTMLDivElement> }>(
+        (acc, name) => ({ ...acc, [name]: React.createRef() }),
+        {}
+    );
 
     return (
         <TabViewStyled>
             <TabTitleRow>
-                {tabNames.map((tabName, idx) => (
-                    <TabTitle
-                        selected={currentTab === idx}
-                        onClick={() => setCurrentTab(idx)}
-                        key={`tab${tabName}${idx}`}
-                    >
-                        {tabName}
-                    </TabTitle>
-                ))}
+                <QuickNav
+                    currentNavItem={tabNames[currentTab]}
+                    navItems={tabNames}
+                    onNavChange={(newTabName) => {
+                        setCurrentTab(tabNames.findIndex((name) => newTabName === name));
+                        tabRefs[newTabName].current?.scrollIntoView({
+                            behavior: 'smooth',
+                        });
+                    }}
+                />
             </TabTitleRow>
             <TabContent>
-                {props.children[currentTab] || (
-                    <i onLoad={() => setCurrentTab(0)}>
-                        Tabs were misconfigured, resetting to zero.
-                    </i>
-                )}
+                {React.Children.map(props.children, (child) => {
+                    if (!React.isValidElement(child)) {
+                        return null;
+                    }
+
+                    return (
+                        <div ref={tabRefs[child.props.title]} key={child.props.title}>
+                            {child}
+                        </div>
+                    );
+                })}
             </TabContent>
         </TabViewStyled>
     );

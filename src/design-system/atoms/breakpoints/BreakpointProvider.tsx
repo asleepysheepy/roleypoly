@@ -30,6 +30,10 @@ export class BreakpointsProvider extends React.Component<{}, ScreenSize> {
         Object.entries(this.mediaQueries).forEach(([key, mediaQuery]) =>
             mediaQuery.addEventListener('change', this.handleMediaEvent)
         );
+
+        this.handleMediaEvent();
+        setTimeout(() => this.handleMediaEvent(), 0);
+        setTimeout(() => this.handleMediaEvent(), 10);
     }
 
     componentWillUnmount() {
@@ -38,8 +42,8 @@ export class BreakpointsProvider extends React.Component<{}, ScreenSize> {
         );
     }
 
-    handleMediaEvent = (event: MediaQueryListEvent) => {
-        console.log('handleMediaEvent', { event });
+    handleMediaEvent = () => {
+        // console.log('handleMediaEvent', { event });
         this.setState({
             ...resetScreen,
             ...this.calculateScreen(),
