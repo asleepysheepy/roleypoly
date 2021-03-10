@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { QuickNav } from '../quick-nav';
-import { TabContent, TabTitleRow, TabViewStyled } from './TabView.styled';
+import {
+    TabContent,
+    TabContentTitle,
+    TabTitleRow,
+    TabViewStyled,
+} from './TabView.styled';
 
 export type TabViewProps = {
     children: React.ReactNode[];
@@ -52,7 +57,10 @@ export const TabView = (props: TabViewProps) => {
                     }
 
                     return (
-                        <div ref={tabRefs[child.props.title]} key={child.props.title}>
+                        <div key={child.props.title}>
+                            <TabContentTitle ref={tabRefs[child.props.title]}>
+                                {child.props.title}
+                            </TabContentTitle>
                             {child}
                         </div>
                     );

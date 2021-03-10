@@ -5,6 +5,7 @@ import { transitions } from '../timings';
 export const NavItem = styled.div<{ selected: boolean }>`
     padding: 7px;
     border-radius: 2px;
+    margin-bottom: 2px;
     transition: background-color ${transitions.actionable}s ease-in-out;
 
     &:hover {

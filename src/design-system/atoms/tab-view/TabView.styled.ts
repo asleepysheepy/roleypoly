@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { onSmallScreen } from '../breakpoints';
 import { palette } from '../colors';
 import { transitions } from '../timings';
+import { text500 } from '../typography';
 
 export const TabViewStyled = styled.div`
     display: flex;
@@ -58,4 +59,11 @@ export const TabContent = styled.div`
             max-width: 100vw;
         `
     )}
+`;
+
+export const TabContentTitle = styled.div`
+    ${text500}
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px;
 `;
